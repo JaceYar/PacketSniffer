@@ -10,9 +10,11 @@ class parser{
 
 private:
     packet p;
-    string source;
-    string dest;
-    string protocol;
+    string source_eth;
+    string dest_eth;
+    string source_IP;
+    string dest_IP;
+    int protocol;
 
     string format_mac_from_unsigned_char_array(unsigned char[]);
 
@@ -20,6 +22,7 @@ private:
 public:
     parser(packet);
     void extract_ethernet_header();
+    void extract_ip_header();
 
 
 

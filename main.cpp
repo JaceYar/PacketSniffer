@@ -19,7 +19,22 @@ int main(){
     string linebreak = "------------------------";
     cout << banner << linebreak << linebreak <<  endl;
                                               
+    // Inside main() after initializing your Raw socket
+    Raw sniffer("eth0"); // Replace with your actual interface (e.g., wlan0, enp3s0)
+    unsigned char buffer[65536];
 
+    cout << "Sniffer started... Press Ctrl+C to stop." << endl;
+    int packet_count = 0;
+
+    while(true) {
+        int size = sniffer.capture_packet(buffer, 65536);
+        if (size < 0) {
+            cout << "Error capturing packet!" << endl;
+            break;
+        }
+        packet_count++;
+        cout << "Successfully snagged packet #" << packet_count << " (" << size << " bytes)" << endl;
+    }
 
 
 

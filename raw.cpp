@@ -17,7 +17,13 @@ Raw::Raw(const string & interface) {
         address.sll_family = AF_PACKET;
         address.sll_protocol = htons(ETH_P_ALL);
         // specify the interface you want to have the socket on 
-        address.sll_ifindex = if_nametoindex(interface.c_str());
+        unsigned int idx = if_nametoindex(interface.c_str());
+        if(idx == 0){
+            cout << "Error: Interface is not valid" << endl;
+        }
+        else{
+            address.sll_ifindex = idx;
+        }
         // bind the socket t othat interface so it only gets packets on that interface
         bind(sock, (const struct sockaddr*)&address, sizeof(address));
     }
