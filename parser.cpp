@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <netinet/ip.h>
-
+#include "data.h"
 parser::parser(packet x){
     p = x;
 }
@@ -20,15 +20,21 @@ string parser::format_mac_from_unsigned_char_array(unsigned char convert[]){
     }
     return ss.str();
 }
-void parser::extract_ethernet_header(){
+Eth_Header parser::extract_ethernet_header(){
     // throws template on top of buffer for getting mac dest source and packet type
+    Eth_Header extracted;
     struct ethhdr * eth = (struct ethhdr*)(p.getbuffer());
-    source_eth = format_mac_from_unsigned_char_array(eth->h_source);
-    dest_eth = format_mac_from_unsigned_char_array(eth->h_dest);
-    protocol = (int)ntohs(eth->h_proto);
+    extracted.source_eth = format_mac_from_unsigned_char_array(eth->h_source);
+    extracted.dest_eth = format_mac_from_unsigned_char_array(eth->h_dest);
+    extracted.protocol = (int)ntohs(eth->h_proto);
+
+    return extracted;
+
+    
 }
 
-void parser::extract_ip_header(){
+IP_Header parser::extract_ip_header(){
+    IP_Header extraction;
     unsigned short hdr_len = 0;
     struct iphdr* ip = (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
     // create zeroed out memory for ips the dest and source ips
@@ -38,8 +44,12 @@ void parser::extract_ip_header(){
     // fill in the source address and destination address now
     source.sin_addr.s_addr = ip->saddr;
     dest.sin_addr.s_addr = ip->daddr;
-    source_IP = string(inet_ntoa(source.sin_addr));
-    dest_IP = string(inet_ntoa(dest.sin_addr));
+
+
+    extraction.source_IP = string(inet_ntoa(source.sin_addr));
+    extraction.dest_IP = string(inet_ntoa(dest.sin_addr));
+
+    return extraction;
 
 
 }

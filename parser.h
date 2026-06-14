@@ -2,6 +2,7 @@
 #define PARSER_H
 
 #include "packet.h"
+#include "data.h"
 
 
 using namespace std;
@@ -14,16 +15,15 @@ private:
     string dest_eth;
     string source_IP;
     string dest_IP;
-    int protocol;
+    string protocol;
 
     string format_mac_from_unsigned_char_array(unsigned char[]);
 
 
 public:
     parser(packet);
-    void extract_ethernet_header();
-    void extract_ip_header();
-
+    Eth_Header extract_ethernet_header();
+    IP_Header extract_ip_header();
 
 
 };
