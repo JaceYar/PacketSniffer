@@ -1,4 +1,5 @@
 #include "raw.h"
+#include <unistd.h>
 
 using namespace std;
 
@@ -32,6 +33,7 @@ Raw::Raw(const string & interface) {
 // destructor implementation
 Raw::~Raw() {
     // If you need to close the socket when the object dies, it would go here!
+    close(sock);
 }
 
 // capture a packet implementation

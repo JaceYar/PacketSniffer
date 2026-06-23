@@ -18,6 +18,7 @@ class packet{
 
     public:
     packet();
+    ~packet();
     packet(unsigned char *buffer, unsigned int);
     unsigned char* getbuffer();
 

@@ -8,9 +8,11 @@ using namespace std;
 struct IP_Header{
     string source_IP;
     string dest_IP;
-    string protocol;
-    int protocol_int;
+    int protocol;
+    
     int hdr_len;
+
+    string protocol_to_string();
 
 
 

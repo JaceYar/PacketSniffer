@@ -48,6 +48,7 @@ IP_Header parser::extract_ip_header(){
 
     extraction.source_IP = string(inet_ntoa(source.sin_addr));
     extraction.dest_IP = string(inet_ntoa(dest.sin_addr));
+    extraction.protocol = ip->protocol;
 
     return extraction;
 

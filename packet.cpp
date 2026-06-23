@@ -8,6 +8,11 @@ packet::packet(){
 
 
 }
+packet::~packet(){
+
+    delete buffer;
+    size =0;
+}
 packet::packet(unsigned char* b, unsigned int s){
     buffer =b;
     size =s;
