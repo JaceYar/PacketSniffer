@@ -1,16 +1,17 @@
 #include "packet.h"
 
 
-packet::packet(){
+/*packet::packet(){
 
     buffer = new unsigned char[65536];
     size =0;
 
 
-}
+}*/
+
 packet::~packet(){
 
-    delete buffer;
+    //delete buffer;
     size =0;
 }
 packet::packet(unsigned char* b, unsigned int s){

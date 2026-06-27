@@ -5,6 +5,24 @@
 
 using namespace std;
 
+struct TCP_Header{
+    int source_port;
+    int destination_port;
+    unsigned int sequence_num;
+    int data_offset;
+    unsigned int ack_num;
+    int flags;
+    int header_len;
+
+};
+
+struct UDP_Header{
+    int source_port;
+    int destination_port;
+    int sequence_num;
+    int len;
+};
+
 struct IP_Header{
     string source_IP;
     string dest_IP;

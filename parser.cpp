@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <netinet/ip.h>
 #include "data.h"
-parser::parser(packet x){
-    p = x;
+#include <netinet/tcp.h>
+parser::parser(packet &x) : p(x){
 }
 
 string parser::format_mac_from_unsigned_char_array(unsigned char convert[]){
@@ -49,9 +49,29 @@ IP_Header parser::extract_ip_header(){
     extraction.source_IP = string(inet_ntoa(source.sin_addr));
     extraction.dest_IP = string(inet_ntoa(dest.sin_addr));
     extraction.protocol = ip->protocol;
+    
 
     return extraction;
 
 
+}
+
+TCP_Header parser::extract_TCP_Header(){
+    TCP_Header extraction;
+    struct tcphdr *tcp = (struct tcphdr*)(p.getbuffer() + get_transport_offset());
+    extraction.source_port = ntohs(tcp->source);
+    extraction.destination_port = ntohs(tcp->dest);
+    extraction.sequence_num = ntohl(tcp->seq);
+    extraction.data_offset = (tcp->th_off);
+    extraction.ack_num = ntohl(tcp->ack_seq);
+    extraction.flags = (tcp->th_flags);
+    extraction.header_len = extraction.data_offset * 4;
+
+    return extraction;
+}
+
+int parser::get_transport_offset(){
+    struct iphdr* ip = (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
+    return ip->ihl *4 + sizeof(struct ethhdr);
 }
 

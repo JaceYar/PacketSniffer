@@ -43,17 +43,38 @@ int main(){
         ethernet = chop.extract_ethernet_header();
 
         // need to put switch here for future
-        IP_Header ipHeader;
-        ipHeader = chop.extract_ip_header();
 
-        cout << "Destination: " << ipHeader.dest_IP << endl;
-        cout << "Source: " << ipHeader.source_IP << endl;
+        if(ethernet.protocol == 2048){
+            IP_Header ipHeader;
+            ipHeader = chop.extract_ip_header();
+
+            cout << "Destination: " << ipHeader.dest_IP << endl;
+            cout << "Source: " << ipHeader.source_IP << endl;
+
+            // if using TCP
+            if(ipHeader.protocol == 6){
+                TCP_Header tcpHead = chop.extract_TCP_Header();
+                cout << "Source Port:" << tcpHead.source_port << endl;
+                cout << "Dest Port: " << tcpHead.destination_port << endl;
+            }
+
+            // for udp
+            else if(ipHeader.protocol == 17){
+                // fill in for udp in a bit 
+            }
+
+        }
+        else{
+            cout << "Was not an Ipv4 packet" << endl;
+        }
 
         cout << "Eth Protocol:" << ethernet.protocol_to_string() << endl;
        
 
         packet_count++;
         cout << "Successfully snagged packet #" << packet_count << " (" << size << " bytes)" << endl;
+
+        cout << endl << endl;
     }
 
 
