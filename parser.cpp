@@ -7,6 +7,7 @@
 #include <netinet/ip.h>
 #include "data.h"
 #include <netinet/tcp.h>
+#include <netinet/udp.h>
 parser::parser(packet &x) : p(x){
 }
 
@@ -73,5 +74,19 @@ TCP_Header parser::extract_TCP_Header(){
 int parser::get_transport_offset(){
     struct iphdr* ip = (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
     return ip->ihl *4 + sizeof(struct ethhdr);
+}
+
+
+UDP_Header parser::extract_UDP_Header(){
+    struct udphdr* udp = (struct udphdr*)(p.getbuffer()+get_transport_offset());
+
+    UDP_Header extraction;
+    extraction.destination_port = ntohs(udp->dest);
+    extraction.source_port = ntohs(udp->source);
+    extraction.len = ntohs(udp->len);
+    extraction.checksum = ntohs(udp->check);
+
+
+    return extraction;
 }
 

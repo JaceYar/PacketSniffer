@@ -19,7 +19,7 @@ struct TCP_Header{
 struct UDP_Header{
     int source_port;
     int destination_port;
-    int sequence_num;
+    int checksum;
     int len;
 };
 

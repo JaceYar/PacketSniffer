@@ -54,6 +54,7 @@ int main(){
             // if using TCP
             if(ipHeader.protocol == 6){
                 TCP_Header tcpHead = chop.extract_TCP_Header();
+                cout << "TCP" << endl;
                 cout << "Source Port:" << tcpHead.source_port << endl;
                 cout << "Dest Port: " << tcpHead.destination_port << endl;
             }
@@ -61,6 +62,10 @@ int main(){
             // for udp
             else if(ipHeader.protocol == 17){
                 // fill in for udp in a bit 
+                UDP_Header udpHead= chop.extract_UDP_Header();
+                cout << "UDP" << endl;
+                cout << "Source Port: " << udpHead.source_port << endl;
+                cout << "Dest Port: " << udpHead.destination_port << endl;
             }
 
         }
