@@ -25,14 +25,23 @@ int main(){
     string interface;
     cout << "Please Enter Interface: ";
     cin >> interface;
-    Raw sniffer(interface); // Replace with your actual interface (e.g., wlan0, enp3s0)
+
+    Raw* sniffer = nullptr;
+    try{
+        sniffer = new Raw(interface);
+    }
+    catch (const exception& e){
+        cerr << "Error: " << e.what() << endl;
+        return 1;
+    }
+      // Replace with your actual interface (e.g., wlan0, enp3s0)
     unsigned char buffer[65536];
 
     cout << "Sniffer started... Press Ctrl+C to stop." << endl;
     int packet_count = 0;
 
     while(true) {
-        int size = sniffer.capture_packet(buffer, 65536);
+        int size = sniffer->capture_packet(buffer, 65536);
         if (size < 0) {
             cout << "Error capturing packet!" << endl;
             break;
@@ -43,7 +52,6 @@ int main(){
         ethernet = chop.extract_ethernet_header();
 
         // need to put switch here for future
-
         if(ethernet.protocol == 2048){
             IP_Header ipHeader;
             ipHeader = chop.extract_ip_header();

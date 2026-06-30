@@ -9,24 +9,27 @@ Raw::Raw(const string & interface) {
     sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
     if(sock < 0){
         // change to throwing an error 
-        cout << "failed to make socket" << endl;
+        throw runtime_error("Failed to make socket");
     }
     else{
         // init the socket adress on link layer
-        sockaddr_ll address;
+        sockaddr_ll address{};
         // allign address with actual socket
         address.sll_family = AF_PACKET;
         address.sll_protocol = htons(ETH_P_ALL);
+
         // specify the interface you want to have the socket on 
         unsigned int idx = if_nametoindex(interface.c_str());
         if(idx == 0){
-            cout << "Error: Interface is not valid" << endl;
+            throw runtime_error("Interface " + interface + "is not valid");
         }
         else{
             address.sll_ifindex = idx;
         }
         // bind the socket t othat interface so it only gets packets on that interface
-        bind(sock, (const struct sockaddr*)&address, sizeof(address));
+        if(bind(sock, (const struct sockaddr*)&address, sizeof(address))<0){
+            throw runtime_error("Failed to bind socket to interace");
+        };
     }
 }
 
