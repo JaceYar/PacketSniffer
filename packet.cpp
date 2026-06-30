@@ -21,3 +21,6 @@ packet::packet(unsigned char* b, unsigned int s){
 unsigned char* packet::getbuffer(){
     return this->buffer;
 }
+unsigned int packet::getsize(){
+    return this->size;
+}

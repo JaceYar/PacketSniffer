@@ -5,6 +5,12 @@
 
 using namespace std;
 
+
+struct Data{
+    unsigned char* start_of_data;
+    int num_bytes =0;
+};
+
 struct TCP_Header{
     int source_port;
     int destination_port;

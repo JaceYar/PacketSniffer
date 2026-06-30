@@ -4,6 +4,7 @@
 #include "packet.h"
 #include "data.h"
 
+struct iphdr; // forward declare so we don't need netinet/ip.h in the header
 
 using namespace std;
 
@@ -18,6 +19,7 @@ private:
     string protocol;
 
     string format_mac_from_unsigned_char_array(unsigned char[]);
+    struct iphdr* get_ip_header(); // DRY: shared by extract_ip_header, get_transport_offset, get_data_start
 
 
 public:
@@ -29,6 +31,8 @@ public:
     TCP_Header extract_TCP_Header();
     int get_transport_offset();
     UDP_Header extract_UDP_Header();
+    int identify_protocol(); // returns ip->protocol (6=TCP, 17=UDP, etc), single source of truth
+    Data get_data_start();
 };
 
 

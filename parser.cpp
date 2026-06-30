@@ -34,10 +34,14 @@ Eth_Header parser::extract_ethernet_header(){
     
 }
 
+struct iphdr* parser::get_ip_header(){
+    return (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
+}
+
 IP_Header parser::extract_ip_header(){
     IP_Header extraction;
     unsigned short hdr_len = 0;
-    struct iphdr* ip = (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
+    struct iphdr* ip = get_ip_header();
     // create zeroed out memory for ips the dest and source ips
     sockaddr_in source{};
     sockaddr_in dest{};
@@ -72,7 +76,7 @@ TCP_Header parser::extract_TCP_Header(){
 }
 
 int parser::get_transport_offset(){
-    struct iphdr* ip = (struct iphdr*)(p.getbuffer()+sizeof(struct ethhdr));
+    struct iphdr* ip = get_ip_header();
     return ip->ihl *4 + sizeof(struct ethhdr);
 }
 
@@ -90,3 +94,29 @@ UDP_Header parser::extract_UDP_Header(){
     return extraction;
 }
 
+
+int parser::identify_protocol(){
+    struct iphdr* ip = get_ip_header();
+    return ip->protocol; // 6 = TCP, 17 = UDP, 1 = ICMP, etc.
+}
+
+Data parser::get_data_start(){
+    Data extraction;
+    int transport_header_len = 0;
+
+    int proto = identify_protocol(); // single check, instead of re-deriving it here AND in main
+    if(proto == 6){ // TCP
+        struct tcphdr* tcp = (struct tcphdr*)(p.getbuffer() + get_transport_offset());
+        transport_header_len = tcp->th_off * 4;
+    }
+    else if(proto == 17){ // UDP
+        transport_header_len = sizeof(struct udphdr);
+    }
+    // else: unknown transport (e.g. ICMP has no ports/transport header the same way),
+    // transport_header_len stays 0, payload starts right after the IP header
+
+    extraction.start_of_data = p.getbuffer() + get_transport_offset() + transport_header_len;
+    extraction.num_bytes = p.getsize() - (get_transport_offset() + transport_header_len);
+
+    return extraction;
+}

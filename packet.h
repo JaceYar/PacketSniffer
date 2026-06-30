@@ -21,6 +21,7 @@ class packet{
     ~packet();
     packet(unsigned char *buffer, unsigned int);
     unsigned char* getbuffer();
+    unsigned int getsize();
 
 
 };
