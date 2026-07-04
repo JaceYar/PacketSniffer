@@ -41,6 +41,7 @@ int main(){
     int packet_count = 0;
 
     while(true) {
+        Parsed_Packet packet_package;
         int size = sniffer->capture_packet(buffer, 65536);
         if (size < 0) {
             cout << "Error capturing packet!" << endl;
@@ -56,6 +57,8 @@ int main(){
             IP_Header ipHeader;
             ipHeader = chop.extract_ip_header();
 
+            packet_package.has_ip = true;
+
             cout << "Destination: " << ipHeader.dest_IP << endl;
             cout << "Source: " << ipHeader.source_IP << endl;
 
@@ -65,6 +68,7 @@ int main(){
                 cout << "TCP" << endl;
                 cout << "Source Port:" << tcpHead.source_port << endl;
                 cout << "Dest Port: " << tcpHead.destination_port << endl;
+                packet_package.has_tcp = true;
             }
 
             // for udp
@@ -74,6 +78,7 @@ int main(){
                 cout << "UDP" << endl;
                 cout << "Source Port: " << udpHead.source_port << endl;
                 cout << "Dest Port: " << udpHead.destination_port << endl;
+                packet_package.has_udp = true;
             }
 
         }

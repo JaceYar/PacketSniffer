@@ -50,10 +50,18 @@ struct Eth_Header{
     string protocol_to_string();
 };
 
-struct Transport_Layer_Header{
+struct Parsed_Packet{
+    Eth_Header eth;
+    IP_Header Ip;
+    UDP_Header UDP;
+    TCP_Header TCP;
+    Data the_data;
 
-
+    bool has_udp = false;;
+    bool has_tcp = false;
+    bool has_ip = false;
 };
+
 
 
 

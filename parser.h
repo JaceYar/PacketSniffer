@@ -33,6 +33,7 @@ public:
     UDP_Header extract_UDP_Header();
     int identify_protocol(); // returns ip->protocol (6=TCP, 17=UDP, etc), single source of truth
     Data get_data_start();
+    Parsed_Packet parse_all();
 };
 
 
