@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/sniffer.dir/link.d CMakeFiles/sniffer.dir/main.cpp.o CMakeFiles/sniffer.dir/data.cpp.o CMakeFiles/sniffer.dir/packet.cpp.o CMakeFiles/sniffer.dir/parser.cpp.o CMakeFiles/sniffer.dir/raw.cpp.o -o sniffer
