@@ -60,6 +60,7 @@ struct Parsed_Packet{
     bool has_udp = false;;
     bool has_tcp = false;
     bool has_ip = false;
+    bool ipv4 = false;
 };
 
 

@@ -3,6 +3,7 @@
 #include "raw.h"
 #include "parser.h"
 #include "data.h"
+#include "display.h"
 using namespace std;
 
 
@@ -49,44 +50,10 @@ int main(){
         }
         packet p = packet(buffer,size);
         parser chop(p);
-        Eth_Header ethernet;
-        ethernet = chop.extract_ethernet_header();
+        
+        packet_package = chop.parse_all();
+        cout << packet_package;
 
-        // need to put switch here for future
-        if(ethernet.protocol == 2048){
-            IP_Header ipHeader;
-            ipHeader = chop.extract_ip_header();
-
-            packet_package.has_ip = true;
-
-            cout << "Destination: " << ipHeader.dest_IP << endl;
-            cout << "Source: " << ipHeader.source_IP << endl;
-
-            // if using TCP
-            if(ipHeader.protocol == 6){
-                TCP_Header tcpHead = chop.extract_TCP_Header();
-                cout << "TCP" << endl;
-                cout << "Source Port:" << tcpHead.source_port << endl;
-                cout << "Dest Port: " << tcpHead.destination_port << endl;
-                packet_package.has_tcp = true;
-            }
-
-            // for udp
-            else if(ipHeader.protocol == 17){
-                // fill in for udp in a bit 
-                UDP_Header udpHead= chop.extract_UDP_Header();
-                cout << "UDP" << endl;
-                cout << "Source Port: " << udpHead.source_port << endl;
-                cout << "Dest Port: " << udpHead.destination_port << endl;
-                packet_package.has_udp = true;
-            }
-
-        }
-        else{
-            cout << "Was not an Ipv4 packet" << endl;
-        }
-
-        cout << "Eth Protocol:" << ethernet.protocol_to_string() << endl;
        
 
         packet_count++;
@@ -96,7 +63,7 @@ int main(){
     }
 
 
-
+    delete sniffer;
 
     return 0;
 }

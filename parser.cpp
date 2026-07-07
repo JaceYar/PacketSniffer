@@ -174,20 +174,21 @@ Data parser::get_data_start(){
 
 Parsed_Packet parser::parse_all(){
     Parsed_Packet package;
-    package.eth = this->extract_ethernet_header();
+    package.eth = extract_ethernet_header();
     if(package.eth.protocol == 2048){
+        package.ipv4 = true;
         package.has_ip = true;
-        package.Ip = this->extract_ip_header();
+        package.Ip = extract_ip_header();
         if(package.Ip.protocol ==6){
             package.has_tcp = true;
-            package.TCP = this->extract_TCP_Header();
+            package.TCP = extract_TCP_Header();
         }
         else if(package.Ip.protocol == 17){
             package.has_udp = true;
-            package.UDP = this->extract_UDP_Header();
+            package.UDP = extract_UDP_Header();
         }
 
-        package.the_data = this->get_data_start();
+        package.the_data = get_data_start();
 
     }
 
