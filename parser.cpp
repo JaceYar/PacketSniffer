@@ -8,6 +8,7 @@
 #include "data.h"
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <netinet/ip_icmp.h>
 parser::parser(packet &x) : p(x){
 }
 
@@ -172,6 +173,19 @@ Data parser::get_data_start(){
     return extraction;
 }
 
+ICMP_Header parser::extract_ICMP_Header(){
+    ICMP_Header extraction;
+    int offset = get_transport_offset();
+        if(offset <0 || (unsigned int)offset + sizeof(struct icmp) > p.getsize()){
+        return extraction;
+    }
+    icmp* header = (struct icmp*) (p.getbuffer() + offset);
+    extraction.code = header->icmp_code;
+    extraction.type = header->icmp_type;
+
+    return extraction;
+}
+
 Parsed_Packet parser::parse_all(){
     Parsed_Packet package;
     package.eth = extract_ethernet_header();
@@ -179,13 +193,21 @@ Parsed_Packet parser::parse_all(){
         package.ipv4 = true;
         package.has_ip = true;
         package.Ip = extract_ip_header();
+        // tcp
         if(package.Ip.protocol ==6){
             package.has_tcp = true;
             package.TCP = extract_TCP_Header();
         }
+        // udp
         else if(package.Ip.protocol == 17){
             package.has_udp = true;
             package.UDP = extract_UDP_Header();
+        }
+        //icmp ping packets
+        else if(package.Ip.protocol == 1){
+            package.is_icmp = true;
+            package.icmp = extract_ICMP_Header();
+
         }
 
         package.the_data = get_data_start();

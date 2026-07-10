@@ -36,6 +36,23 @@ ostream& operator<<(ostream& os, const Parsed_Packet& pckt){
                 }
                 os << "Data: \n" << output_data << endl;
             }
+            else if(pckt.Ip.protocol ==1){
+                os << "Protocol: ICMP\n" << endl;
+                string output_data ="";
+                os << "ICMP Code: " << pckt.icmp.code << endl;
+                os << "ICMP Type:" << pckt.icmp.type << endl;
+
+                for(int i=0; i< pckt.the_data.num_bytes; ++i ){
+
+                    unsigned char c = *(pckt.the_data.start_of_data+i);
+                    if(!isprint(c)){
+                        c = '*';
+                    }
+                    output_data.push_back(c);
+                }
+                os << "Data: \n" << output_data << endl;
+  
+            }
         }
         else{
             os << "Packet did not have IP header\n";

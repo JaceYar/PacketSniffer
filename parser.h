@@ -34,6 +34,7 @@ public:
     int identify_protocol(); // returns ip->protocol (6=TCP, 17=UDP, etc), single source of truth
     Data get_data_start();
     Parsed_Packet parse_all();
+    ICMP_Header extract_ICMP_Header();
 };
 
 

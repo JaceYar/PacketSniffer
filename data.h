@@ -11,6 +11,12 @@ struct Data{
     int num_bytes =0;
 };
 
+struct ICMP_Header{
+    int type;
+    int code;
+
+};
+
 struct TCP_Header{
     int source_port;
     int destination_port;
@@ -56,11 +62,13 @@ struct Parsed_Packet{
     UDP_Header UDP;
     TCP_Header TCP;
     Data the_data;
+    ICMP_Header icmp;
 
-    bool has_udp = false;;
+    bool has_udp = false;
     bool has_tcp = false;
     bool has_ip = false;
     bool ipv4 = false;
+    bool is_icmp = false;
 };
 
 
