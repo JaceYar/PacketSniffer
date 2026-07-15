@@ -9,6 +9,9 @@
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include <netinet/ip_icmp.h>
+
+using namespace std;
+
 parser::parser(packet &x) : p(x){
 }
 
@@ -52,7 +55,6 @@ struct iphdr* parser::get_ip_header(){
 IP_Header parser::extract_ip_header(){
 
     IP_Header extraction;
-    unsigned short hdr_len = 0;
     struct iphdr* ip = get_ip_header();
     // create zeroed out memory for ips the dest and source ips
     sockaddr_in source{};

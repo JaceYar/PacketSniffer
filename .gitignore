@@ -1,6 +1,7 @@
-banner.txt
-test.txt
-a.out
 build/
-test_parser.cpp
-
+*.o
+a.out
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile

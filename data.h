@@ -3,9 +3,6 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
-
 struct Data{
     unsigned char* start_of_data;
     int num_bytes =0;
@@ -36,24 +33,24 @@ struct UDP_Header{
 };
 
 struct IP_Header{
-    string source_IP;
-    string dest_IP;
+    std::string source_IP;
+    std::string dest_IP;
     int protocol;
     
     int hdr_len;
 
-    string protocol_to_string();
+    std::string protocol_to_string();
 
 
 
 };
 
 struct Eth_Header{
-    string source_eth;
-    string dest_eth;
+    std::string source_eth;
+    std::string dest_eth;
     int protocol;
 
-    string protocol_to_string();
+    std::string protocol_to_string();
 };
 
 struct Parsed_Packet{
@@ -70,10 +67,5 @@ struct Parsed_Packet{
     bool ipv4 = false;
     bool is_icmp = false;
 };
-
-
-
-
-
 
 #endif

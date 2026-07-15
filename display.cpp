@@ -1,6 +1,8 @@
 #include "display.h"
 #include <cctype>
 
+using namespace std;
+
 ostream& operator<<(ostream& os, const Parsed_Packet& pckt){
     if(pckt.ipv4 == true){
         if(pckt.has_ip == true){

@@ -5,11 +5,6 @@
 #include <iostream>
 #include "parser.h"
 
-using namespace std;
-
-
-ostream& operator<<(ostream& os, const Parsed_Packet& pckt);
-
-
+std::ostream& operator<<(std::ostream& os, const Parsed_Packet& pckt);
 
 #endif
